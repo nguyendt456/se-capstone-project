@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import Navbar from './components/navbar';
+import { MapContainer, TileLayer, Marker, Popup} from "react-leaflet";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

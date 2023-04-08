@@ -6,19 +6,19 @@ function Navbar() {
     
     <nav>
       <ul>
-        <div className = "flex flex-col gap-[30px] p-[10px] text-black w-[70px] items-center h-[100vh]">
-          <div className = "flex flex-col gap-[40px] items-center justify-center">
+        <div className = "navbar absolute flex flex-col">
+          <div className = " flex flex-col">
             <li>
-                <NavLink to="/">Home</NavLink>
+              <NavLink className="navlink" to="/">Home</NavLink>
             </li>
             <li>
-              <NavLink to="/login">Login</NavLink>
+              <NavLink className="navlink" to="/login">Login</NavLink>
             </li>
             <li>
-              <NavLink to="/map">Map</NavLink>
+              <NavLink className="navlink" to="/map">Map</NavLink>
             </li>
             <li>
-              <NavLink to="/contact">Contact</NavLink>
+              <NavLink className="navlink" to="/contact">Contact</NavLink>
             </li>
           </div>
         </div>

@@ -24,6 +24,26 @@
   color: white;
 }
 
+.navbar {
+  z-index: 1200;
+  background-color: #32b000;
+  width: 75px;
+  color: antiquewhite;
+  border-bottom-right-radius: 25%;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.navlink {
+  display: block;
+  width: 100%;
+  padding-left: 10px;
+}
+
+.leaflet-container {
+  height: 100vh;
+}
+
 .App-link {
   color: #61dafb;
 }

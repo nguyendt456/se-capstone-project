@@ -1,86 +1,51 @@
-import React from 'react'
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
-import { MarkerF } from '@react-google-maps/api';
-
-const green_marker = require('../resources/green_marker.svg').default
-const yellow_marker = require('../resources/yellow_marker.svg').default
-const red_marker = require('../resources/red_marker.svg').default
-
-const containerStyle = {
-  width: '100%',
-  height: '400px'
-};
+import { MapContainer, TileLayer, Marker, Popup} from "react-leaflet";
+import "leaflet/dist/leaflet.css"
+import "../App.css"
+import { Icon } from "leaflet";
 
 const center = {
   lat: 10.771916,
   lng: 106.659877
 };
 
+const green_icon = new Icon({
+  iconUrl: require("../resources/green_marker.svg").default,
+  iconSize: [45, 45]
+})
+
+const red_icon = new Icon({
+  iconUrl: require("../resources/red_marker.svg").default,
+  iconSize: [45, 45]
+})
+
+const yellow_marker = new Icon({
+  iconUrl: require("../resources/yellow_marker.svg").default,
+  iconSize: [45, 45]
+})
+
 const listOfMarker = [
-    {color: "green", lat: 10.774515, lng: 106.664342},
-    {color: "yellow", lat: 10.771390, lng: 106.659877},
+    {color: "green", capacity: 20, lat: 10.772648, lng: 106.660651},
+    {color: "yellow", capacity: 50, lat: 10.773349, lng: 106.664747},
 ]
 
-const style = {
-    disableDefaultUI: true, // disables all default controls
-    styles: [
-    {
-        elementType: "labels",
-        stylers: [
-        { visibility: "off" }, // hides all points of interest icons
-        ],
-    },
-    ],
-}
-
 function Map() {
-    const row = []
-    for(let i = 0; i < listOfMarker.length; i++) {
-        if (listOfMarker[i].color === "green") {
-            row.push(
-                <MarkerF
-                    position={{lat: listOfMarker[i].lat, lng: listOfMarker[i].lng}}
-                    icon={{
-                        url: green_marker,
-                    }}
-                />
-            )
-        }
-        if (listOfMarker[i].color === "yellow") {
-            row.push(
-                <MarkerF
-                    position={{lat: listOfMarker[i].lat, lng: listOfMarker[i].lng}}
-                    icon={{
-                        url: yellow_marker,
-                    }}
-                />
-            )
-        }
-        if (listOfMarker[i].color === "red") {
-            row.push(
-                <MarkerF
-                    position={{lat: listOfMarker[i].lat, lng: listOfMarker[i].lng}}
-                    icon={{
-                        url: yellow_marker,
-                    }}
-                />
-            )
-        }
-    }
   return (
-    <LoadScript
-      googleMapsApiKey="AIzaSyB-H9MPA8c64SSuoOhhn5W6ZcGQH0pQx9Q"
-    >
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        options={style}
-        center={center}
-        zoom={15}
-      >
-        { /* Child components, such as markers, info windows, etc. */ }
-        {row}
-      </GoogleMap>
-    </LoadScript>
+    <MapContainer center={center} zoom={16} scrollWheelZoom={true}>
+      <TileLayer
+          attribution='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
+          url="https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}@2x.png?key=s4GiDUyR8suA6wyDyBGP"
+      />
+      {listOfMarker.map((value)  => {
+        switch(value.color) {
+          case "green":
+            return (<Marker position={[value.lat, value.lng]} icon={green_icon}><Popup><h2>Capacity of MCP: {value.capacity}%</h2></Popup></Marker>)
+          case "red":
+            return (<Marker position={[value.lat, value.lng]} icon={red_icon}><Popup><h2>Capacity of MCP: {value.capacity}%</h2></Popup></Marker>)
+          case "yellow":
+            return (<Marker position={[value.lat, value.lng]} icon={yellow_marker}><Popup><h2>Capacity of MCP: {value.capacity}%</h2></Popup></Marker>)
+        }
+      })}
+    </MapContainer>
   )
 }
 
