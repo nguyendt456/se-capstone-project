@@ -25,27 +25,58 @@
 }
 
 .navbar {
+  display: inline-block;
+  margin: 0 10px 10px 10px;
   z-index: 1200;
   background-color: #32b000;
   width: 75px;
   color: antiquewhite;
-  border-bottom-right-radius: 25%;
   padding-bottom: 10px;
   padding-top: 10px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  align-items: center;
+}
+
+.nav-item {
+  text-align: center;
 }
 
 .navlink {
   display: block;
   width: 100%;
-  padding-left: 10px;
 }
 
 .leaflet-container {
   height: 100vh;
 }
 
+.root {
+  display: inline-block;
+  position: absolute;
+  z-index: 1100;
+}
+
+.menu {
+  opacity: 0;
+  transition: opacity 0.2s;
+  display: inline-block;
+}
+
+.menu.open {
+  opacity: 1;
+}
+
+.menu.closed {
+  opacity: 0;
+}
+
 .App-link {
   color: #61dafb;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 @keyframes App-logo-spin {
