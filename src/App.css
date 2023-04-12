@@ -58,6 +58,7 @@
 }
 
 .menu {
+  max-height: 100vh;
   opacity: 0;
   transition: opacity 0.2s;
   display: inline-block;
@@ -75,9 +76,9 @@
   color: #61dafb;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   display: none;
-}
+} */
 
 @keyframes App-logo-spin {
   from {

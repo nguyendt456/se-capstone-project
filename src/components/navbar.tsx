@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import HomeIcon from '@mui/icons-material/Home';
+import { ContextState, GlobalContext } from './root';
 
-function Navbar() {
+const Navbar = () => {
+  const { GlobalContextData, setGlobalContextData, setVehiclePanel, setVehicleFocus, vehicleMainMenu, setVehicleMainMenu }: ContextState = useContext(GlobalContext)
   return (
     <nav>
       <ul>
@@ -13,7 +15,7 @@ function Navbar() {
               <NavLink className="navlink" to="/"><HomeIcon sx={{display: 'inline', width: '25px', height: '25px'}}/></NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="navlink" to="/vehicle"><LocalShippingIcon sx={{display: 'inline', width: '25px', height: '25px'}}/></NavLink>
+              <NavLink onClick={() => setVehicleMainMenu(true)} className="navlink" to="/vehicle"><LocalShippingIcon sx={{display: 'inline', width: '25px', height: '25px'}}/></NavLink>
             </li>
           </div>
         </div>
