@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react'
-import { ContextState, GlobalContext } from './root'
+import { useContext, useState } from 'react'
+import { ContextDataType, GlobalContext } from './root'
 import { Avatar, Box, Button, Card, CardHeader, CardMedia, Collapse, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CloseIcon from '@mui/icons-material/Close';
@@ -8,10 +8,9 @@ import PersonIcon from '@mui/icons-material/Person';
 import { Collector, Vehicle } from '../models/model';
 
 const VehicleAssign = () => {
-    const { GlobalContextData, setGlobalContextData, setVehiclePanel, setVehicleFocus, vehicleMainMenu, setVehicleMainMenu, vehiclePanel, vehicleFocus}: ContextState = useContext(GlobalContext)
-    let listOfVehicle = GlobalContextData.listOfVehicle
-    let listOfCollector = GlobalContextData.listOfCollector
-    let listOfJanitor = GlobalContextData.listOfJanitor
+    const { globalContextHook, vehiclePanelHook, vehicleFocusHook }: ContextDataType = useContext(GlobalContext)
+    let listOfVehicle = globalContextHook.dataHook.listOfVehicle
+    let listOfCollector = globalContextHook.dataHook.listOfCollector
     
     const [ assignVehicleState, setAssignVehicleState ] = useState(false)
 
@@ -20,23 +19,47 @@ const VehicleAssign = () => {
     }
     const handleAddCollector = (vehicle: Vehicle, collector: Collector) => {
         vehicle.status = "In progress"
+        let prevOwner: Collector | undefined;
         listOfVehicle.map((v, i) => {
             if (vehicle.name === v.name) {
+                prevOwner = listOfVehicle[i].owner
                 listOfVehicle[i].owner = collector
+                console.log(prevOwner)
             }
         })
         listOfCollector.map((c, i) => {
             if (collector === c) {
                 listOfCollector[i].vehicle_incharge = vehicle
             }
+            if (prevOwner === c) {
+                listOfCollector[i].vehicle_incharge = undefined
+            }
         })
-        setGlobalContextData((prev) => ({
+        globalContextHook.setDataHook((prev) => ({
             ...prev,
             listOfVehicle: listOfVehicle,
             listOfCollector: listOfCollector,
         }))
-        console.log(GlobalContextData)
-    }  
+    }
+    const handleRemoveCollector = (vehicle: Vehicle, collector: Collector) => {
+        vehicle.status = "Free"
+        let prevOwner: Collector | undefined;
+        listOfVehicle.map((v, i) => {
+            if (vehicle.name === v.name) {
+                listOfVehicle[i].owner = undefined
+            }
+        })
+        listOfCollector.map((c, i) => {
+            if (collector === c) {
+                listOfCollector[i].vehicle_incharge = undefined
+            }
+        })
+        globalContextHook.setDataHook((prev) => ({
+            ...prev,
+            listOfVehicle: listOfVehicle,
+            listOfCollector: listOfCollector,
+        }))
+    }
     return (
         <Grid container sx={{
             width: 'auto',
@@ -44,7 +67,7 @@ const VehicleAssign = () => {
             position: 'absolute',
             zIndex: 1100,
         }}>
-            <Collapse orientation="horizontal" in={vehiclePanel}>
+            <Collapse orientation="horizontal" in={vehiclePanelHook.dataHook}>
                 <Card sx={{
                     width: 400,
                 }}>
@@ -55,11 +78,11 @@ const VehicleAssign = () => {
                     <CardHeader
                         title={
                         <Box sx={{fontWeight: 'bold'}}>
-                            {vehicleFocus.name}
+                            {vehicleFocusHook.dataHook.name}
                         </Box>}
                         subheader={
                             <Box>
-                                Status: {vehicleFocus.status}
+                                Status: {vehicleFocusHook.dataHook.status}
                             </Box>}
                     />
                     <Grid item sx={{
@@ -74,9 +97,16 @@ const VehicleAssign = () => {
                                 <Box>
                                     {listOfCollector.map((collectorFocus) => (
                                     <ListItem secondaryAction={
-                                        (collectorFocus.vehicle_incharge === undefined) && <Button variant='outlined' onClick={() => {
-                                            handleAddCollector(vehicleFocus, collectorFocus)
+                                        (collectorFocus.vehicle_incharge === undefined) ? <Button variant='outlined' onClick={() => {
+                                            handleAddCollector(vehicleFocusHook.dataHook, collectorFocus)
                                         }}>Add</Button>
+                                        :
+                                        <IconButton onClick={() => handleRemoveCollector(vehicleFocusHook.dataHook, collectorFocus)}>
+                                            <CloseIcon sx={{
+                                                width: '20px',
+                                                height: '20px',
+                                            }}/>
+                                        </IconButton>
                                     }>
                                         <ListItemAvatar>
                                             <Avatar>
@@ -101,7 +131,7 @@ const VehicleAssign = () => {
                                 if (assignVehicleState == true) {
                                     setAssignVehicleState(false)
                                 } else {
-                                    setVehiclePanel(false)
+                                    vehiclePanelHook.setDataHook(false)
                                 }
                             }}>
                             {assignVehicleState ? 

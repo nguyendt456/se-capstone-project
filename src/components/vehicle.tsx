@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { Avatar, Box, Button, Card, Collapse, Fade, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, ThemeProvider, createTheme } from "@mui/material";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { ContextState, GlobalContext } from "./root";
 import ImageIcon from '@mui/icons-material/Image';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import { Vehicle } from "../models/model";
+import { ContextDataType, GlobalContext } from "./root";
 
 const theme = createTheme({
     palette: {
@@ -21,33 +21,35 @@ const theme = createTheme({
 });
 
 const VehiclePage: React.FC = () => {
-    const { GlobalContextData, setGlobalContextData, setVehiclePanel, setVehicleFocus, vehicleMainMenu, setVehicleMainMenu}: ContextState = useContext(GlobalContext)
-    let listOfVehicle = GlobalContextData.listOfVehicle
+    const { globalContextHook, vehiclePanelHook, vehicleFocusHook, vehicleMainMenuHook }: ContextDataType = useContext(GlobalContext)
+    let listOfVehicle = globalContextHook.dataHook.listOfVehicle
     useEffect(() => {
-        setVehicleMainMenu(true)
+        vehicleMainMenuHook.setDataHook(true)
     }, [])
 
     const handleClick = (vehicle :Vehicle) => {
-        setVehiclePanel(true)
-        setVehicleFocus(vehicle)
+        vehiclePanelHook.setDataHook(true)
+        vehicleFocusHook.setDataHook(vehicle)
     }
 
     return (
-        <div className={`menu ${vehicleMainMenu ? 'open' : 'closed'}`}>
-            <Fade in={vehicleMainMenu}>
-                <Grid
+            <Grid
                     container
                     direction="column"
                     sx={{
+                        width: 'auto',
+                    }}
+                >
+                <Fade in={vehicleMainMenuHook.dataHook} unmountOnExit={true}>
+                    <Box sx={{
+                        width: 'auto',
                         backgroundColor: '#ffffff',
                         borderBottomRightRadius: '12px',
                         borderBottomLeftRadius: '12px',
                         boxShadow: '0.3em 0.3em 1em rgba(0, 0, 0, 0.3);',
-                    }}
-                >
+                    }}>
                     <Grid item xs={12}>
                         <Box sx={{
-                            display: 'block',
                             padding: '10px 0 10px 15px',
                             borderBottom: '1px solid hsla(210,18%,87%,1)',
                             fontFamily: 'Roboto',
@@ -60,9 +62,6 @@ const VehiclePage: React.FC = () => {
                         </Box>
                     </Grid>
                     <Grid item>
-                        <Box sx={{
-                            display: 'block',
-                        }}>
                             <List sx={{ width: '100%', maxWidth: 360, maxHeight: '80vh', overflowY: 'auto', bgcolor: '#ffffff'}}>
                                 {listOfVehicle.map((vehicle :Vehicle) => 
                                     <Box sx={{
@@ -89,7 +88,6 @@ const VehiclePage: React.FC = () => {
                                 )
                                 }
                             </List>
-                        </Box>
                     </Grid>
                     <Grid item>
                         <Box sx={{
@@ -97,7 +95,7 @@ const VehiclePage: React.FC = () => {
                             textAlign: 'center',
                             paddingBottom: '10px',
                         }}>
-                            <IconButton onClick={() => setVehicleMainMenu(false)}>
+                            <IconButton onClick={() => vehicleMainMenuHook.setDataHook(false)}>
                                 <ArrowBackIosNewIcon sx={{
                                     width: '15px',
                                     height: '15px',
@@ -105,9 +103,9 @@ const VehiclePage: React.FC = () => {
                             </IconButton>
                         </Box>
                     </Grid>
-                </Grid>
-            </Fade>
-        </div>
+                    </Box>
+                </Fade>
+            </Grid>
     )
 }
 

@@ -18,7 +18,7 @@ export interface MCPs extends Coordinate {
 
 export interface Vehicle {
     name: string
-    owner: Collector
+    owner?: Collector
     status: string
 }
 
