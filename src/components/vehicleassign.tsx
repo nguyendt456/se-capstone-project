@@ -42,11 +42,11 @@ const VehicleAssign = () => {
         }))
     }
     const handleRemoveCollector = (vehicle: Vehicle, collector: Collector) => {
-        vehicle.status = "Free"
-        let prevOwner: Collector | undefined;
         listOfVehicle.map((v, i) => {
-            if (vehicle.name === v.name) {
+            if (collector.vehicle_incharge != undefined && collector.vehicle_incharge.name === v.name) {
                 listOfVehicle[i].owner = undefined
+                listOfVehicle[i].status = "Free"
+                console.log(listOfVehicle)
             }
         })
         listOfCollector.map((c, i) => {
