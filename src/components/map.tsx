@@ -3,8 +3,10 @@ import "leaflet/dist/leaflet.css";
 import "../App.css";
 import { Icon } from "leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
-import { useContext } from "react";
+import { useContext, useRef, useState } from "react";
 import { ContextDataType, GlobalContext } from "./root";
+import { Button, TextField } from "@mui/material";
+import MarkerForm from "./mapmarker";
 
 const center = {
     lat: 10.771916,
@@ -27,8 +29,23 @@ const yellow_marker = new Icon({
 });
 
 function Map() {
-    const { globalContextHook }: ContextDataType = useContext(GlobalContext);
-    let listOfMCPs = globalContextHook.dataHook.listOfMCPs;
+    const { globalContextHook }: ContextDataType = useContext(GlobalContext)
+    let listOfMCPs = globalContextHook.dataHook.listOfMCPs
+    const capacity = useRef<HTMLDivElement>(null)
+
+    const handleInput = (targetIndex: number,newCapacity: number | undefined) => {
+        if (newCapacity === undefined) return
+
+        listOfMCPs.map((value, index) => {
+            if (targetIndex === index) {
+                listOfMCPs[index].capacity = newCapacity;
+            }
+        })
+        globalContextHook.setDataHook((prev) => ({
+            ...prev,
+            listOfMCPs: listOfMCPs,
+        }))
+    }
     return (
         <MapContainer center={center} zoom={16} scrollWheelZoom={true}>
             <TileLayer
@@ -36,7 +53,7 @@ function Map() {
                 url="https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}@2x.png?key=s4GiDUyR8suA6wyDyBGP"
             />
             <MarkerClusterGroup chunkedLoading>
-                {listOfMCPs.map((value) => {
+                {listOfMCPs.map((value, index) => {
                     if (value.capacity >= 0 && value.capacity <= 33) {
                         return (
                             <Marker
@@ -46,6 +63,7 @@ function Map() {
                                 <Popup>
                                     Name: {value.name}
                                     <p>Capacity of MCP: {value.capacity}%</p>
+                                    <MarkerForm targetIndex={index}/>
                                 </Popup>
                             </Marker>
                         );
@@ -59,6 +77,7 @@ function Map() {
                                 <Popup>
                                     Name: {value.name}
                                     <p>Capacity of MCP: {value.capacity}%</p>
+                                    <MarkerForm targetIndex={index}/>
                                 </Popup>
                             </Marker>
                         );
@@ -72,6 +91,7 @@ function Map() {
                                 <Popup>
                                     Name: {value.name}
                                     <p>Capacity of MCP: {value.capacity}%</p>
+                                    <MarkerForm targetIndex={index}/>
                                 </Popup>
                             </Marker>
                         );
