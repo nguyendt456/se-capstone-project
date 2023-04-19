@@ -43,7 +43,7 @@ const MarkerForm = (props: MarkerFormType) => {
 
     return (
         <>
-            Update: <TextField sx={{marginTop: 1}} size="small" InputLabelProps={{sx : {fontSize: '14px'}}} label="Enter new capacity" error={error} variant="outlined" onChange={handleOnChangeValidation} />
+            Update capacity: <TextField sx={{marginTop: 1}} size="small" InputLabelProps={{shrink: true, sx : {fontSize: '14px'}}} label="Enter new capacity" error={error} variant="outlined" onChange={handleOnChangeValidation}/>
             <Collapse in={!error}>
                 <Button
                     sx={{marginTop: 1}}

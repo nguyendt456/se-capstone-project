@@ -11,7 +11,9 @@ import {
     Vehicle,
 } from "../models/model";
 import { Grid } from "@mui/material";
-import VehicleAssign from "./vehicleassign";
+import VehicleAssign from "./vehiclepanel";
+import TaskAssign from "./taskassign";
+import TaskPanel from "./taskpanel";
 
 export interface StateHook<T> {
     dataHook   : T;
@@ -19,10 +21,13 @@ export interface StateHook<T> {
 }
 
 export interface ContextDataType {
-    globalContextHook  : StateHook<GlobalContextType>;
-    vehiclePanelHook   : StateHook<boolean>;
-    vehicleFocusHook   : StateHook<Vehicle>;
-    vehicleMainMenuHook: StateHook<boolean>;
+    globalContextHook  : StateHook<GlobalContextType>
+    vehiclePanelHook   : StateHook<boolean>
+    vehicleFocusHook   : StateHook<Vehicle>
+    vehicleMainMenuHook: StateHook<boolean>
+    janitorMainMenuHook: StateHook<boolean>
+    janitorPanelHook   : StateHook<boolean>
+    janitorFocusHook   : StateHook<Janitor>
 }
 
 const GlobalContext = createContext<ContextDataType>({
@@ -30,6 +35,9 @@ const GlobalContext = createContext<ContextDataType>({
     vehiclePanelHook   : {} as StateHook<boolean>,
     vehicleFocusHook   : {} as StateHook<Vehicle>,
     vehicleMainMenuHook: {} as StateHook<boolean>,
+    janitorMainMenuHook: {} as StateHook<boolean>,
+    janitorPanelHook   : {} as StateHook<boolean>,
+    janitorFocusHook   : {} as StateHook<Janitor>,
 });
 
 const Root: React.FC = () => {
@@ -110,34 +118,47 @@ const Root: React.FC = () => {
         { name: "Xe tai 59A-245897", status: "Free", owner: {} as Person },
         { name: "Xe tai 59B-887510", status: "Free", owner: {} as Person },
     ];
-    const [GlobalContextData, setGlobalContextData] = useState<
-        GlobalContextType
-    >({
-        listOfMCPs: listOfMCPs,
-        listOfJanitor: listOfJanitor,
+    const [GlobalContextData, setGlobalContextData] = useState<GlobalContextType>({
+        listOfMCPs     : listOfMCPs,
+        listOfJanitor  : listOfJanitor,
         listOfCollector: listOfCollector,
-        listOfVehicle: listOfVehicle,
+        listOfVehicle  : listOfVehicle,
     });
-    const [vehiclePanel, setVehiclePanel] = useState(false);
-    const [vehicleFocus, setVehicleFocus] = useState({} as Vehicle);
-    const [vehicleMainMenu, setVehicleMainMenu] = useState(false);
+    const [vehiclePanel, setVehiclePanel]       = useState(false)
+    const [vehicleFocus, setVehicleFocus]       = useState({} as Vehicle)
+    const [vehicleMainMenu, setVehicleMainMenu] = useState(false)
+    const [janitorMainMenu, setJanitorMainMenu] = useState(false)
+    const [janitorPanel, setJanitorPanel]       = useState(false)
+    const [janitorFocus, setJanitorFocus]       = useState({} as Janitor)
 
     const globalContextHook: StateHook<GlobalContextType> = {
-        dataHook: GlobalContextData,
+        dataHook   : GlobalContextData,
         setDataHook: setGlobalContextData,
     };
     const vehiclePanelHook: StateHook<boolean> = {
-        dataHook: vehiclePanel,
+        dataHook   : vehiclePanel,
         setDataHook: setVehiclePanel,
     };
     const vehicleFocusHook: StateHook<Vehicle> = {
-        dataHook: vehicleFocus,
+        dataHook   : vehicleFocus,
         setDataHook: setVehicleFocus,
     };
     const vehicleMainMenuHook: StateHook<boolean> = {
-        dataHook: vehicleMainMenu,
+        dataHook   : vehicleMainMenu,
         setDataHook: setVehicleMainMenu,
     };
+    const janitorMainMenuHook: StateHook<boolean> = {
+        dataHook   : janitorMainMenu,
+        setDataHook: setJanitorMainMenu,
+    }
+    const janitorPanelHook: StateHook<boolean> = {
+        dataHook   : janitorPanel,
+        setDataHook: setJanitorPanel,
+    }
+    const janitorFocusHook: StateHook<Janitor> = {
+        dataHook   : janitorFocus,
+        setDataHook: setJanitorFocus,
+    }
 
     return (
         <GlobalContext.Provider
@@ -146,6 +167,9 @@ const Root: React.FC = () => {
                 vehiclePanelHook,
                 vehicleFocusHook,
                 vehicleMainMenuHook,
+                janitorMainMenuHook,
+                janitorPanelHook,
+                janitorFocusHook,
             }}
         >
             <Grid
@@ -158,14 +182,15 @@ const Root: React.FC = () => {
                 }}
             >
                 <Grid item>
-                    <Navbar />
+                    <Navbar/>
                 </Grid>
                 <Grid item sx={{width: 'auto'}}>
-                    <App />
+                    <App/>
                 </Grid>
             </Grid>
-            <VehicleAssign />
-            <Map />
+            <VehicleAssign/>
+            <TaskPanel/>
+            <Map/>
         </GlobalContext.Provider>
     );
 };

@@ -7,12 +7,13 @@ import Map from './components/map';
 import Vehicle from './components/vehicle';
 import VehiclePage from './components/vehicle';
 import { randomInt } from 'crypto';
+import TaskAssign from './components/taskassign';
 
 function App() {
   return (
     <Routes>
       <Route path='/' element={<></>}/>
-      {/* <Route path='/login' element={<Login/>}/> */}
+      <Route path='/assigntask' element={<TaskAssign/>}/>
       <Route path='/vehicle' element={<VehiclePage/>}/>
     </Routes>
   );
