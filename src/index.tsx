@@ -5,13 +5,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Root } from './components/root';
-import Login from './components/login';
 import { Auth0Provider } from '@auth0/auth0-react';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-
 
 root.render(
   // <React.StrictMode>
@@ -22,6 +20,8 @@ root.render(
         authorizationParams={{
           redirect_uri: window.location.origin
         }}
+        useRefreshTokens={true}
+	      cacheLocation="localstorage"
       >
       <Root/>
       </Auth0Provider>

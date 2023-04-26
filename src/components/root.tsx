@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import Navbar from "./navbar";
 import App from "../App";
 import Map from "./map";
@@ -14,6 +14,7 @@ import { Grid } from "@mui/material";
 import VehicleAssign from "./vehiclepanel";
 import TaskAssign from "./taskassign";
 import TaskPanel from "./taskpanel";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export interface StateHook<T> {
     dataHook   : T;
@@ -40,7 +41,7 @@ const GlobalContext = createContext<ContextDataType>({
     janitorFocusHook   : {} as StateHook<Janitor>,
 });
 
-const Root: React.FC = () => {
+const Root = () => {
     let listOfMCPs: MCPs[] = [
         {
             name    : "To Hien Thanh 1",
@@ -160,6 +161,8 @@ const Root: React.FC = () => {
         setDataHook: setJanitorFocus,
     }
 
+    const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
+    if (isAuthenticated) {
     return (
         <GlobalContext.Provider
             value={{
@@ -193,6 +196,12 @@ const Root: React.FC = () => {
             <Map/>
         </GlobalContext.Provider>
     );
+    } else {
+        if (!isLoading) {
+            loginWithRedirect()
+        }
+        return null
+    }
 };
 
 export { Root, GlobalContext };
