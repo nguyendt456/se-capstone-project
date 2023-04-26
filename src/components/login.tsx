@@ -1,26 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React from 'react';
+import {
+  MDBContainer,
+  MDBCol,
+  MDBRow,
+  MDBBtn,
+  MDBIcon,
+  MDBInput,
+  MDBCheckbox
+}
+from 'mdb-react-ui-kit';
+import { useAuth0 } from '@auth0/auth0-react';
 
-import { Box, Collapse, Fade, FormControlLabel, Switch } from "@mui/material";
-function Login() {
-    const [checkedMenu, setCheckedMenu] = useState(false)
+const Login: React.FC = () => {
+    const { loginWithRedirect } = useAuth0();
 
-    useEffect(() => {
-        setCheckedMenu(true)
-    })
-    return (
-        <div className={`menu ${checkedMenu ? 'open' : 'closed'}`}>
-            <Box sx={{
-                display: 'flex',
-                marginLeft: '75px',
-                width: 500,
-                height: 500,
-                backgroundColor: '#ffffff',
-                borderBottomRightRadius: '12px'
-            }}
-            />
-        </div>
-    )
+    return <button onClick={() => loginWithRedirect()}>Log In</button>;
 }
 
 export default Login;

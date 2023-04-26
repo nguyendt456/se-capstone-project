@@ -38,6 +38,10 @@ const TaskPanel = () => {
                 janitor.task = undefined
             }
         })
+        globalContextHook.setDataHook((prev) => ({
+            ...prev,
+            listOfJanitor: listOfJanitor,
+        }))
     }
 
     return (
@@ -72,7 +76,7 @@ const TaskPanel = () => {
                                 <Box>
                                     {listOfMCPs.map((mcp) => (
                                     <ListItem secondaryAction={
-                                        (janitorFocusHook.dataHook.task === undefined) ? <Button variant='outlined' onClick={() => {
+                                        (janitorFocusHook.dataHook.task !== mcp) ? <Button variant='outlined' onClick={() => {
                                             handleAddMCPs(janitorFocusHook.dataHook, mcp)
                                         }}>Add</Button>
                                         :

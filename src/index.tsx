@@ -5,6 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Root } from './components/root';
+import Login from './components/login';
+import { Auth0Provider } from '@auth0/auth0-react';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,7 +16,15 @@ const root = ReactDOM.createRoot(
 root.render(
   // <React.StrictMode>
     <BrowserRouter>
+      <Auth0Provider
+        domain='dev-lo4knocfxs314wi1.us.auth0.com'
+        clientId='RkAlisYhjtKeVWx4J78w99MCpTImM4wP'
+        authorizationParams={{
+          redirect_uri: window.location.origin
+        }}
+      >
       <Root/>
+      </Auth0Provider>
     </BrowserRouter>
   // </React.StrictMode>
 );

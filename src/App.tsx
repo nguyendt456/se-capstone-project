@@ -12,7 +12,7 @@ import TaskAssign from './components/taskassign';
 function App() {
   return (
     <Routes>
-      <Route path='/' element={<></>}/>
+      <Route path='/' element={<Login/>}/>
       <Route path='/assigntask' element={<TaskAssign/>}/>
       <Route path='/vehicle' element={<VehiclePage/>}/>
     </Routes>
